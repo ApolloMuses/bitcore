@@ -35,7 +35,7 @@ function V8(opts) {
   this.apiPrefix = _.isUndefined(opts.apiPrefix)? '/api' : opts.apiPrefix; 
   this.coin = opts.coin || Defaults.COIN;
   this.network = opts.network || 'livenet';
-  this.v8network = v8network(this.network);
+  this.v8network = v8network(opts.v8network || this.network);
 
   //v8 is always cashaddr
   this.addressFormat =  this.coin == 'bch' ? 'cashaddr' : null;

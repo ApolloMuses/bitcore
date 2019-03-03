@@ -54,6 +54,7 @@ function BlockChainExplorer(opts) {
       return new V8({
         coin: coin,
         network: network,
+        v8network: opts.v8network || network,
         url: url,
         apiPrefix: opts.apiPrefix,
         userAgent: opts.userAgent,
