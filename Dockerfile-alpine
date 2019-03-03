@@ -9,7 +9,7 @@ RUN apk update \
     make \
     gcc \
     g++ \
-    pythin
+    python
 
 RUN npm config set unsafe-perm true
 
