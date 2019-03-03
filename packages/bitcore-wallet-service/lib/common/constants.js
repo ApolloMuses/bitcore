@@ -11,6 +11,7 @@ Constants.COINS = {
 Constants.NETWORKS = {
   LIVENET: 'livenet',
   TESTNET: 'testnet',
+  REGTEST: 'regtest',
 };
 
 Constants.ADDRESS_FORMATS = ['copay', 'cashaddr', 'legacy'];
