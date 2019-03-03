@@ -14,14 +14,14 @@ var Constants = Common.Constants,
 var PROVIDERS = {
   'v8': {
     'btc': {
-      'livenet': 'https://api.bitpay.com',
-      'testnet': 'https://api.bitpay.com',
-      'regtest': 'https://api.bitpay.com',
+      'livenet': 'https://livenet.btc.bitpay.com',
+      'testnet': 'https://testnet.btc.bitpay.com',
+      'regtest': 'https://regtest.btc.bitpay.com',
     },
     'bch': {
-      'livenet': 'https://api.bitpay.com',
-      'testnet': 'https://api.bitpay.com',
-      'regtest': 'https://api.bitpay.com',
+      'livenet': 'https://livenet.bch.bitpay.com',
+      'testnet': 'https://testnet.bch.bitpay.com',
+      'regtest': 'https://regtest.bch.bitpay.com',
     },
 
   },
