@@ -3827,7 +3827,8 @@ WalletService.prototype._runScan = function(wallet, step, opts, cb) {
     var inactiveCounter = 0;
     var allAddresses = [];
 
-    var gap = Defaults.SCAN_ADDRESS_GAP;
+    var gap = opts.gapLimit || Defaults.SCAN_ADDRESS_GAP;
+    self.logi("Scan with gap", gap);
 
     //when powerScanning, we just accept gap<=3
     if (step > 1) {
