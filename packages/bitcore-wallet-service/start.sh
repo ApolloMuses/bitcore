@@ -29,6 +29,7 @@ run_program ()
   fi
 }
 
+date > logs/start.log
 rm -rf pids/*.pid
 run_program messagebroker/messagebroker.js pids/messagebroker.pid logs/messagebroker.log
 run_program bcmonitor/bcmonitor.js pids/bcmonitor.pid logs/bcmonitor.log
