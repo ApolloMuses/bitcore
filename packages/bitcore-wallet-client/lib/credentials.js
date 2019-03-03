@@ -53,7 +53,7 @@ function _checkCoin(coin) {
 };
 
 function _checkNetwork(network) {
-  if (!_.includes(['livenet', 'testnet'], network)) throw new Error('Invalid network');
+  if (!_.includes(['livenet', 'testnet', 'regtest'], network)) throw new Error('Invalid network');
 };
 
 Credentials.create = function(coin, network) {
