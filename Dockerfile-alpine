@@ -8,7 +8,8 @@ RUN apk update \
     git \
     make \
     gcc \
-    g++
+    g++ \
+    pythin
 
 RUN npm config set unsafe-perm true
 
@@ -40,4 +41,5 @@ RUN apk remove \
   make \
   gcc \
   g++ \
+  python \
   && rm /var/cache/apk/*
