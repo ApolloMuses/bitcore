@@ -16,12 +16,14 @@ var PROVIDERS = {
     'btc': {
       'livenet': 'https://api.bitpay.com',
       'testnet': 'https://api.bitpay.com',
+      'regtest': 'https://api.bitpay.com',
     },
     'bch': {
       'livenet': 'https://api.bitpay.com',
       'testnet': 'https://api.bitpay.com',
+      'regtest': 'https://api.bitpay.com',
     },
- 
+
   },
 };
 
@@ -45,7 +47,7 @@ function BlockChainExplorer(opts) {
 
   if (coin == 'bch' && !opts.addressFormat)
     opts.addressFormat = 'cashaddr';
-  
+
 
   switch (provider) {
     case 'v8':
@@ -57,7 +59,7 @@ function BlockChainExplorer(opts) {
         userAgent: opts.userAgent,
         addressFormat: opts.addressFormat,
       });
- 
+
     default:
       throw new Error('Provider ' + provider + ' not supported.');
   };
