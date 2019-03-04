@@ -36,7 +36,7 @@ RUN npm install
 
 COPY . .
 
-RUN apk remove \
+RUN apk del \
   git \
   make \
   gcc \
