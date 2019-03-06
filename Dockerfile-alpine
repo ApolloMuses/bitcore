@@ -38,8 +38,6 @@ COPY ./packages/bitcore-wallet-service/package*.json ./packages/bitcore-wallet-s
 
 RUN ./node_modules/.bin/lerna bootstrap
 
-COPY . .
-
 RUN apk del \
   git \
   make \
@@ -47,3 +45,5 @@ RUN apk del \
   g++ \
   python \
   && rm /var/cache/apk/*
+
+COPY . .
