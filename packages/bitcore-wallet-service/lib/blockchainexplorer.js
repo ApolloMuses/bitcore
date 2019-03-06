@@ -33,11 +33,13 @@ function BlockChainExplorer(opts) {
   var provider = opts.provider || 'v8';
   var coin = opts.coin || Defaults.COIN;
   var network = opts.network || 'livenet';
+  var v8network = opts.v8network || network;
 
   $.checkState(PROVIDERS[provider], 'Provider ' + provider + ' not supported');
   $.checkState(_.includes(_.keys(PROVIDERS[provider]), coin), 'Coin ' + coin + ' not supported by this provider');
 
   $.checkState(_.includes(_.keys(PROVIDERS[provider][coin]), network), 'Network ' + network + ' not supported by this provider for coin ' + coin);
+  $.checkState(_.includes(_.keys(PROVIDERS[provider][coin]), v8network), 'V8 Network ' + network + ' not supported by this provider for coin ' + coin);
 
   var url = opts.url || PROVIDERS[provider][coin][network];
 
@@ -54,7 +56,7 @@ function BlockChainExplorer(opts) {
       return new V8({
         coin: coin,
         network: network,
-        v8network: opts.v8network || network,
+        v8network: v8network,
         url: url,
         apiPrefix: opts.apiPrefix,
         userAgent: opts.userAgent,
