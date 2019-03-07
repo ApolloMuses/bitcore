@@ -37,7 +37,7 @@ Notification.create = function(opts) {
   x.id = _.padStart(now, 14, '0') + _.padStart(opts.ticker || 0, 4, '0');
   x.type = opts.type || 'general';
   x.data = opts.data;
-  x.walletId = opts.walletId;
+  x.walletId = opts.walletId === 'regtest' ? 'testnet' : opts.walletId;
   x.creatorId = opts.creatorId;
 
   return x;
@@ -51,7 +51,7 @@ Notification.fromObj = function(obj) {
   x.id = obj.id;
   x.type = obj.type,
   x.data = obj.data;
-  x.walletId = obj.walletId;
+  x.walletId = obj.walletId === 'regtest' ? 'testnet' : obj.walletId;
   x.creatorId = obj.creatorId;
 
   return x;
