@@ -5,12 +5,12 @@ var bitcore = module.exports;
 // module information
 bitcore.version = 'v' + require('./package.json').version;
 bitcore.versionGuard = function(version) {
+  console.log('versionGuard check', version)
   if (version !== undefined) {
     var message = 'More than one instance of bitcore-lib found. ' +
       'Please make sure to require bitcore-lib and check that submodules do' +
       ' not also include their own bitcore-lib dependency.';
-    // throw new Error(message);
-    console.log(message)
+    throw new Error(message);
   }
 };
 bitcore.versionGuard(global._bitcore);
