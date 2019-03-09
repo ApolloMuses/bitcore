@@ -1,11 +1,13 @@
 'use strict';
 
+console.log('load bitcore-lib')
+
 var bitcore = module.exports;
 
 // module information
 bitcore.version = 'v' + require('./package.json').version;
 bitcore.versionGuard = function(version) {
-  console.log('versionGuard check', version)
+  console.log('versionGuard check', version, 'vs', bitcore.version)
   if (version !== undefined) {
     var message = 'More than one instance of bitcore-lib found. ' +
       'Please make sure to require bitcore-lib and check that submodules do' +
