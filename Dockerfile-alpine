@@ -1,4 +1,4 @@
-FROM node:carbon-alpine
+FROM node:8.10-alpine
 
 ENV NODE_ENV=development
 
@@ -12,8 +12,6 @@ RUN apk update \
     python
 
 RUN npm config set unsafe-perm true
-
-RUN npm install -g npm@6.9.0
 
 WORKDIR /bitcore
 
