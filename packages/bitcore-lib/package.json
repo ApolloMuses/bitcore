@@ -43,7 +43,7 @@
     "lodash": "=4.17.11"
   },
   "devDependencies": {
-    "bitcore-build": "file:../bitcore-build",
+    "bitcore-build": "^8.1.0",
     "brfs": "^2.0.1",
     "chai": "^4.2.0",
     "gulp": "^4.0.0",
