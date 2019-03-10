@@ -51,5 +51,3 @@ RUN ./node_modules/.bin/lerna bootstrap
 RUN rm /var/cache/apk/*
 
 COPY . .
-
-RUN npm run compile --prefix packages/bitcore-node
