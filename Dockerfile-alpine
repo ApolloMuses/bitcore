@@ -21,8 +21,6 @@ COPY package*.json ./
 COPY lerna.json ./
 RUN npm install
 
-COPY . .
-
 COPY ./packages/bitcore-build/package*.json ./packages/bitcore-build/
 COPY ./packages/bitcore-client/package*.json ./packages/bitcore-client/
 COPY ./packages/bitcore-lib/package*.json ./packages/bitcore-lib/
@@ -52,6 +50,6 @@ RUN ./node_modules/.bin/lerna bootstrap
 
 RUN rm /var/cache/apk/*
 
-RUN ls -lah ./packages/bitcore-wallet-service/node_modules
+COPY . .
 
 RUN npm run compile --prefix packages/bitcore-node
