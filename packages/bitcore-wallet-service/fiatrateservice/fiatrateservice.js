@@ -8,7 +8,11 @@ var FiatRateService = require('../lib/fiatrateservice');
 var service = new FiatRateService();
 service.init(config, function(err) {
   if (err) throw err;
-  service.startCron(config, function(err) {
+  let opts = config;
+  if (config.fiatRateServiceOpts) {
+    opts = config.fiatRateServiceOpts;
+  }
+  service.startCron(opts, function(err) {
     if (err) throw err;
 
     console.log('Fiat rate service started');
