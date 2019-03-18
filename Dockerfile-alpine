@@ -10,7 +10,8 @@ RUN apk update \
     gcc \
     g++ \
     python \
-    bash
+    bash \
+    openssh
 
 RUN npm config set unsafe-perm true
 
