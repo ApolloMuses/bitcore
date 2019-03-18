@@ -37,6 +37,7 @@ COPY ./packages/bitcore-wallet-service/package*.json ./packages/bitcore-wallet-s
 #COPY ./packages/insight-previous/package*.json ./packages/insight-previous/
 
 RUN ./node_modules/.bin/lerna bootstrap
+RUN ./node_modules/.bin/lerna compile
 
 #RUN apk del \
 #  git \
