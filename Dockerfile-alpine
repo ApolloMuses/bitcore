@@ -37,16 +37,16 @@ COPY ./packages/bitcore-wallet-service/package*.json ./packages/bitcore-wallet-s
 #COPY ./packages/insight/package*.json ./packages/insight/
 #COPY ./packages/insight-previous/package*.json ./packages/insight-previous/
 
-RUN npm run postinstall
+RUN npm run bootstrap
 
-#RUN apk del \
-#  git \
-#  make \
-#  gcc \
-#  g++ \
-#  python \
-#
+RUN apk del \
+  git \
+  make \
+  gcc \
+  g++
 
 RUN rm /var/cache/apk/*
 
 COPY . .
+
+RUN npm run compile
