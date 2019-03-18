@@ -9,7 +9,8 @@ RUN apk update \
     make \
     gcc \
     g++ \
-    python
+    python \
+    bash
 
 RUN npm config set unsafe-perm true
 
@@ -36,8 +37,7 @@ COPY ./packages/bitcore-wallet-service/package*.json ./packages/bitcore-wallet-s
 #COPY ./packages/insight/package*.json ./packages/insight/
 #COPY ./packages/insight-previous/package*.json ./packages/insight-previous/
 
-RUN ./node_modules/.bin/lerna bootstrap
-RUN ./node_modules/.bin/lerna compile
+RUN npm run postinstall
 
 #RUN apk del \
 #  git \
