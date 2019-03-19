@@ -2,6 +2,7 @@ import express = require('express');
 import { PerformanceTracker } from '../decorators/Loggify';
 import config from '../config';
 import { ChainNetwork } from '../types/ChainNetwork';
+import { StateStorage } from '../models/state';
 const router = express.Router({ mergeParams: true });
 
 router.get('/enabled-chains', function(_, res) {
@@ -17,6 +18,15 @@ router.get('/enabled-chains', function(_, res) {
 router.get('/performance', function(_, res) {
   res.json(PerformanceTracker);
 });
+
+router.get('/state', async function(_, res) {
+  try {
+    const state = await StateStorage.collection.findOne({});
+    return res.json(state);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+})
 
 module.exports = {
   router: router,

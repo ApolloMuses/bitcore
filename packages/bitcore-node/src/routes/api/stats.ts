@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ChainStateProvider } from '../../providers/chain-state';
+import { StateStorage } from '../../models/state';
 const router = require('express').Router({ mergeParams: true });
 
 router.get('/', async function(_: Request, res: Response) {
@@ -25,6 +26,20 @@ router.get('/daily-transactions', async function(req: Request, res: Response) {
     return res.status(500).send(err);
   }
 });
+
+router.get('/initial-sync-complete', async function(req: Request, res: Response) {
+  try {
+    const { chain, network } = req.params;
+    const state = await StateStorage.collection.findOne({});
+    if (state && state.initialSyncComplete && state.initialSyncComplete.includes(`${chain}:${network}`)) {
+      return res.status(200).send({ initialSyncComplete: true });
+    }
+
+    return res.status(500).send({ initialSyncComplete: false });
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+})
 
 module.exports = {
   router: router,
