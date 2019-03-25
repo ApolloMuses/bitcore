@@ -28,6 +28,14 @@ router.get('/state', async function(_, res) {
   }
 })
 
+router.get('/:chain/:network/sync', async function(req, res) {
+  let { chain, network } = req.params;
+  const state = await StateStorage.collection.findOne({});
+  const initialSyncComplete =
+    state && state.initialSyncComplete && state.initialSyncComplete.includes(`${chain}:${network}`);
+  res.json({ initialSyncComplete });
+});
+
 module.exports = {
   router: router,
   path: '/status'
