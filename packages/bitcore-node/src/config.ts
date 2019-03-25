@@ -78,8 +78,6 @@ const Config = function(): ConfigType {
     }
   };
 
-  console.log('Config', config)
-
   let foundConfig = findConfig();
   const mergeCopyArray = (objVal, srcVal) => (objVal instanceof Array ? srcVal : undefined);
   config = _.mergeWith(config, foundConfig, mergeCopyArray);
