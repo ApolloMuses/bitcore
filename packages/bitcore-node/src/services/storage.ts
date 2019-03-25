@@ -29,8 +29,10 @@ export class StorageService {
   start(args: Partial<ConfigType> = {}): Promise<MongoClient> {
     return new Promise((resolve, reject) => {
       let options = Object.assign({}, this.configService.get(), args);
-      let { dbName, dbHost, dbPort } = options;
-      const connectUrl = `mongodb://${dbHost}:${dbPort}/${dbName}?socketTimeoutMS=3600000&noDelay=true`;
+      let { dbName, dbHost, dbPort, dbUri } = options;
+      const connectUrl = dbUri ? dbUri : `mongodb://${dbHost}:${dbPort}/${dbName}?socketTimeoutMS=3600000&noDelay=true`;
+      console.log('connectUrl', connectUrl);
+      console.log('dbUri', dbUri);
       let attemptConnect = async () => {
         return MongoClient.connect(
           connectUrl,

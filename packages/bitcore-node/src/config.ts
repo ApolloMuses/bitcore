@@ -57,6 +57,7 @@ const Config = function(): ConfigType {
     dbHost: process.env.DB_HOST || '127.0.0.1',
     dbName: process.env.DB_NAME || 'bitcore',
     dbPort: process.env.DB_PORT || '27017',
+    dbUri: process.env.DB_URI || '',
     numWorkers: cpus().length,
     chains: {},
     services: {
@@ -76,6 +77,8 @@ const Config = function(): ConfigType {
       storage: {}
     }
   };
+
+  console.log('Config', config)
 
   let foundConfig = findConfig();
   const mergeCopyArray = (objVal, srcVal) => (objVal instanceof Array ? srcVal : undefined);
