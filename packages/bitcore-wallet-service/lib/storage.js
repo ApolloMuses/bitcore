@@ -129,12 +129,12 @@ Storage.prototype.connect = function(opts, cb) {
   if (this.db) return cb();
 
   var config = opts.mongoDb || {};
-  mongodb.MongoClient.connect(config.uri, function(err, db) {
+  mongodb.MongoClient.connect(config.uri, { useNewUrlParser: true }, function(err, dbo) {
     if (err) {
       log.error('Unable to connect to the mongoDB. Check the credentials.');
       return cb(err);
     }
-    self.db = db;
+    self.db = dbo.db(config.dbName || 'bws');
     self._createIndexes();
     console.log('Connection established to mongoDB');
     return cb();
@@ -196,7 +196,7 @@ Storage.prototype.storeWalletAndUpdateCopayersLookup = function(wallet, cb) {
     w: 1
   }, function(err) {
     if (err) return cb(err);
-    self.db.collection(collections.COPAYERS_LOOKUP).insert(copayerLookups, {
+    self.db.collection(collections.COPAYERS_LOOKUP).insertMany(copayerLookups, {
       w: 1
     }, function(err) {
       if (err) return cb(err);
@@ -430,7 +430,7 @@ Storage.prototype.fetchNotifications = function(walletId, notificationId, minTs,
 
 // TODO: remove walletId from signature
 Storage.prototype.storeNotification = function(walletId, notification, cb) {
-  this.db.collection(collections.NOTIFICATIONS).insert(notification, {
+  this.db.collection(collections.NOTIFICATIONS).insertOne(notification, {
     w: 1
   }, cb);
 };
@@ -502,7 +502,7 @@ Storage.prototype.migrateToCashAddr = function(walletId, cb) {
   cursor.on("end", function() {
     console.log(`Migration to cash address of ${walletId} Finished`);
     return self.clearWalletCache(walletId,cb);
-  }); 
+  });
 
   cursor.on("err", function(err) {
     return cb(err);
@@ -570,7 +570,7 @@ Storage.prototype.storeAddress = function(address, cb) {
 Storage.prototype.markSyncedAddresses = function(addresses, cb) {
   var self = this;
   self.db.collection(collections.ADDRESSES).update({
-    address: { '$in': addresses }, 
+    address: { '$in': addresses },
   }, { '$set': { beRegistered: true }} , {
     w: 1,
     upsert: false,
@@ -587,7 +587,7 @@ Storage.prototype.deregisterWallet = function(walletId, cb) {
   }, { '$set': { beRegistered: null }} , {
     w: 1,
     upsert: false,
-  }, function () { 
+  }, function () {
     self.db.collection(collections.ADDRESSES).update({
       walletId:  walletId
     }, { '$set': { beRegistered: null }} , {
@@ -607,7 +607,7 @@ Storage.prototype.storeAddressAndWallet = function(wallet, addresses, cb) {
   var addresses = [].concat(addresses);
   if (_.isEmpty(addresses)) return cb();
 
-  self.db.collection(collections.ADDRESSES).insert(addresses, {
+  self.db.collection(collections.ADDRESSES).insertMany(addresses, {
     w: 1
   }, function(err) {
     if (err) return cb(err);
@@ -635,7 +635,7 @@ Storage.prototype.fetchAddressesByWalletId = function(walletId, addresses, cb) {
 
   this.db.collection(collections.ADDRESSES).find({
     walletId: walletId,
-    address: { '$in': addresses }, 
+    address: { '$in': addresses },
   }, {address: true, isChange: true} ).toArray(function(err, result) {
     if (err) return cb(err);
     if (!result) return cb();
@@ -786,7 +786,7 @@ Storage.prototype.setWalletAddressChecked = function(walletId, totalAddresses, c
     upsert: true,
   }, cb);
 };
- 
+
 
 // Since cache TX are "hard confirmed" skip, and limit
 // should be reliable to query the database.
@@ -813,9 +813,9 @@ Storage.prototype.getTxHistoryCacheV8 = function(walletId, skip, limit, cb) {
       var firstPosition = cacheStatus.tipIndex - skip - limit + 1;
       var lastPosition = cacheStatus.tipIndex - skip + 1;
 
-      if (firstPosition < 0) 
+      if (firstPosition < 0)
         firstPosition=0;
-      if (lastPosition <= 0) 
+      if (lastPosition <= 0)
         return cb(null, []);
 
       //console.log('[storage.js.750:first/lastPosition:]',firstPosition + '/'+lastPosition); //TODO
@@ -901,7 +901,7 @@ Storage.prototype.getTxHistoryStreamV8 = function(walletId, cb) {
 
 
 /*
- * @param {string} [opts.walletId] - The wallet id to use as current wallet 
+ * @param {string} [opts.walletId] - The wallet id to use as current wallet
  * @param {tipIndex} [integer] - Last tx index of the current cache
  * @param {array} [items] - The items (transactions) to store
  * @param {updateHeight} [integer] - The blockchain height up to which the transactions where queried, with CONFIRMATIONS_TO_START_CACHING subtracted.
@@ -926,7 +926,7 @@ Storage.prototype.storeTxHistoryCacheV8 = function(walletId, tipIndex, items, up
     pos = item.position;
     delete item.position;
     //console.log('STORING [storage.js.804:at:]',pos, item.blockheight);
-    self.db.collection(collections.CACHE).insert({
+    self.db.collection(collections.CACHE).insertOne({
       walletId: walletId,
       type: 'historyCacheV8',
       key: pos,
@@ -978,7 +978,7 @@ Storage.prototype.storeFiatRate = function(providerName, rates, cb) {
 
   var now = Date.now();
   async.each(rates, function(rate, next) {
-    self.db.collection(collections.FIAT_RATES).insert({
+    self.db.collection(collections.FIAT_RATES).insertOne({
       provider: providerName,
       ts: now,
       code: rate.code,
@@ -1202,13 +1202,13 @@ Storage.prototype.checkAndUseGlobalCache = function(key, duration, cb) {
 
 Storage.prototype.storeGlobalCache = function (key, values, cb) {
   var now = Date.now();
-  this.db.collection(collections.CACHE).update({ 
+  this.db.collection(collections.CACHE).update({
     key: key,
     walletId: null,
     type: null,
   }, {
     "$set":
-    { 
+    {
       ts: now,
       result: values,
     }
@@ -1220,7 +1220,7 @@ Storage.prototype.storeGlobalCache = function (key, values, cb) {
 
 Storage.prototype.clearGlobalCache = function (key, cb) {
   var now = Date.now();
-  this.db.collection(collections.CACHE).remove({ 
+  this.db.collection(collections.CACHE).remove({
     key: key,
     walletId: null,
     type: null,
@@ -1265,7 +1265,7 @@ Storage.prototype.walletCheck = async function(params) {
 
 
 Storage.prototype.acquireLock = function(key, expireTs, cb) {
-  this.db.collection(collections.LOCKS).insert({
+  this.db.collection(collections.LOCKS).insertOne({
     _id: key,
     expireOn: expireTs,
   },{}, cb);

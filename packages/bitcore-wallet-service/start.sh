@@ -41,4 +41,4 @@ run_program bws.js pids/bws.pid logs/bws.log
 echo "wait 15s..."
 sleep 15
 
-tail -f logs/*.log
+tail -f logs/*.log -n 1000
